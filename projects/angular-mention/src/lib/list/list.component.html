@@ -1,0 +1,16 @@
+<ng-container *ngIf="list.length; else emptyQuery">
+  <list-item *ngFor="let item of list; let index = index"
+             contenteditable="false"
+             #listItem
+             [context]="item"
+             [outputItemProperty]="config.outputItemProperty"
+             [class]="selectedItemIndex === index && (config.listItemHoverClass || 'mention-list-item-focused')"
+             [ngClass]="[config.listItemClass || 'mention-list-item']"
+             (click)='selectItem(item)'
+             (mouseover)='focusedItem(item)'>
+  </list-item>
+</ng-container>
+
+<ng-template #emptyQuery>
+  <span [class]="config.listEmptyClass || 'mention-list-empty'"> {{config.emptyListPlaceholder}}</span>
+</ng-template>

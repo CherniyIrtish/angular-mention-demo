@@ -1,0 +1,14 @@
+{
+  "name": "angular-mention",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "6.0.0",
+    "@angular/core": "6.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CherniyIrtish/angular-mention-demo"
+  },
+  "homepage": "https://github.com/CherniyIrtish/angular-mention-demo",
+  "keywords": ["angular", "mention", "mentions", "angular2+", "angular6", "angular mention", "angular mentions", "autocomplete"]
+}

@@ -1,0 +1,34 @@
+:host(.mention-list) {
+  display: inline-block;
+  position: absolute;
+  min-width: 100px;
+  text-align: center;
+  background-color:rgb(245,245,220);
+}
+
+.mention-list-empty {
+  background-color:rgb(245,245,220);
+  width: 160px;
+  border-radius: 4px;
+  display: inline-block;
+  padding: 6px;
+}
+
+.mention-list-item {
+  display: block;
+  padding: 4px 0;
+  background-color:rgb(245,245,220);
+  cursor: pointer;
+
+  &:first-child {
+    border-radius: 4px 4px 0 0;
+  }
+
+  &:last-child {
+    border-radius: 0 0 4px 4px;
+  }
+}
+
+.mention-list-item-focused {
+  background-color:rgb(220,220,220);
+}
