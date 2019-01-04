@@ -5,7 +5,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { NgMentionModule } from '../../node_modules/angular-mention';
+import { NgMentionModule } from '../../projects/angular-mention/src/lib/ng-mention.module';
+
 
 @NgModule({
   declarations: [

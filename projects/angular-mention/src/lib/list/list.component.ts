@@ -1,13 +1,15 @@
 import { NgMentionService } from './../ng-mention.service';
 import { EventEmitter, Input, Output, OnInit, QueryList, Component, ViewChildren } from '@angular/core';
+
 import { IMentionConfig } from './../ng-mention.models';
 import { ListItemComponent } from './../list-item/list-item.component';
 
+
 @Component({
-  selector: "list",
-  templateUrl: "./list.component.html",
-  styleUrls: ["./list.component.scss"],
-  host: { "[class]": '[this.config.listClass || "mention-list"]' },
+  selector: 'list',
+  templateUrl: './list.component.html',
+  styleUrls: ['./list.component.scss'],
+  host: {'[class]': '[this.config.listClass || "mention-list"]'},
 })
 export class ListComponent implements OnInit {
   @ViewChildren('listItem') items: QueryList<ListItemComponent>;
@@ -18,11 +20,12 @@ export class ListComponent implements OnInit {
 
   @Input('config') public config: IMentionConfig;
 
-  @Input('list') public set setList(list) {
+  @Input('list')
+  public set setList(list: any[]) {
     this.list = list;
-    setTimeout(_ => this.selectedItemIndex = 0, 0);
-  };
-  
+    setTimeout(_ => this.selectedItemIndex   = 0, 0);
+  }
+
   public selectItem(item): void {
     this.onSelect.emit(item);
   }
@@ -31,7 +34,7 @@ export class ListComponent implements OnInit {
     this.list.length && this.selectItem(this.list[this.selectedItemIndex]);
   }
 
-  public focusedItem(selectedItem) {
+  public focusedItem(selectedItem): void {
     this.items.forEach((listItem, index: number) => {
       if (listItem.context === selectedItem) {
         this.selectedItemIndex = index;
@@ -39,9 +42,10 @@ export class ListComponent implements OnInit {
     });
   }
 
-  public constructor(private _mentionService: NgMentionService) {}
+  public constructor(private _mentionService: NgMentionService) {
+  }
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this._mentionService.getFocusedItemIndexShift().subscribe((shift: number) => {
       const index: number = this.selectedItemIndex + shift;
 

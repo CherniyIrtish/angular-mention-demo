@@ -1,4 +1,4 @@
-import { IMentionConfig } from './../../projects/angular-mention/src/lib/ng-mention.models';
+
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 const managers = [

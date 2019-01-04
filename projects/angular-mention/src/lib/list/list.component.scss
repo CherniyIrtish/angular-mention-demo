@@ -1,6 +1,7 @@
 :host(.mention-list) {
   display: inline-block;
-  position: absolute;
+  //position: absolute;
+  position: fixed;
   min-width: 100px;
   text-align: center;
   background-color:rgb(245,245,220);

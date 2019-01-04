@@ -1,11 +1,24 @@
 import { ListComponent } from './list/list.component';
 import { NgMentionService } from './ng-mention.service';
 import { IMentionConfig } from './ng-mention.models';
-import { Directive, forwardRef, AfterContentInit, ComponentRef, OnInit, Output, EventEmitter, HostListener, Input, ElementRef, ViewContainerRef } from "@angular/core";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
+import {
+  Directive,
+  forwardRef,
+  AfterContentInit,
+  ComponentRef,
+  OnInit,
+  Output,
+  EventEmitter,
+  HostListener,
+  Input,
+  ElementRef,
+  ViewContainerRef
+} from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
 
 @Directive({
-  selector: "[ng-mention]",
+  selector: '[ng-mention]',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -25,7 +38,6 @@ export class NgMentionDirective implements AfterContentInit, ControlValueAccesso
     39: (event: KeyboardEvent) => this._arrowRight(event)
   };
 
-  private _onChanged = (_: string) => {};
   private _selectObj: Selection = window.getSelection();
   private _rangeObj: Range = document.createRange();
   private _listComponent: ComponentRef<ListComponent>;
@@ -38,8 +50,8 @@ export class NgMentionDirective implements AfterContentInit, ControlValueAccesso
   @Output() public onSearch: EventEmitter<string> = new EventEmitter();
 
 
-  @HostListener("keyup", ["$event"]) onKeyUp(event: KeyboardEvent): void {
-      if (this._selectObj.anchorNode.textContent.match(this._initPattern)) {
+  @HostListener('keyup', ['$event']) onKeyUp(event: KeyboardEvent): void {
+    if (this._selectObj.anchorNode.textContent.match(this._initPattern)) {
 
       if (!this._tempNode && !Boolean(event.which in this._keyMapHandler) && this._isChooseModeInvoked(event)) {
         this._switchChooseMode();
@@ -53,10 +65,10 @@ export class NgMentionDirective implements AfterContentInit, ControlValueAccesso
     this._onChanged(this._elRef.nativeElement.innerHTML);
   }
 
-  @HostListener("keydown", ["$event"]) onKeyDown(event: KeyboardEvent): void {
+  @HostListener('keydown', ['$event']) onKeyDown(event: KeyboardEvent): void {
     if (!this._tempNode && event.which === 13) {
       event.preventDefault();
-      document.execCommand("insertHTML", false, "<br>\u200C");
+      document.execCommand('insertHTML', false, '<br>\u200C');
     }
 
     if (this._tempNode && event.which in this._keyMapHandler) {
@@ -64,13 +76,13 @@ export class NgMentionDirective implements AfterContentInit, ControlValueAccesso
     }
   }
 
-  @HostListener("paste", ["$event"]) onPaste(clbEvent: ClipboardEvent): void {
-    const pastedData: string = clbEvent.clipboardData.getData("text/plain");
-    document.execCommand("insertText", false, pastedData);
+  @HostListener('paste', ['$event']) onPaste(clbEvent: ClipboardEvent): void {
+    const pastedData: string = clbEvent.clipboardData.getData('text/plain');
+    document.execCommand('insertText', false, pastedData);
     clbEvent.preventDefault();
   }
 
-  @HostListener("document:click", ["$event"]) onClick(event: MouseEvent): void {
+  @HostListener('document:click', ['$event']) onClick(event: MouseEvent): void {
     if (this._tempNode && !this._listComponent.location.nativeElement.contains(event.target)) {
       this._revertTempNode();
     }
@@ -88,7 +100,8 @@ export class NgMentionDirective implements AfterContentInit, ControlValueAccesso
     }
   }
 
-  @Input("ng-mention") public set setMentionConfig(userConfig: IMentionConfig) {
+  @Input('ng-mention')
+  public set setMentionConfig(userConfig: IMentionConfig) {
     if (userConfig instanceof Object && !Array.isArray(userConfig) || typeof userConfig === 'undefined') {
       this._mentionConfig = this._mentionService.getCompletedConfig(userConfig);
     } else {
@@ -96,7 +109,8 @@ export class NgMentionDirective implements AfterContentInit, ControlValueAccesso
     }
   }
 
-  @Input('list') public set setlist(list) {
+  @Input('list')
+  public set setlist(list: any[]) {
     this._list = list;
     if (this._listComponent) {
       this._listComponent.instance.setList = list;
@@ -110,7 +124,7 @@ export class NgMentionDirective implements AfterContentInit, ControlValueAccesso
   ) {}
 
   public ngOnInit(): void {
-    this._initPattern = new RegExp(`(^|\\s)${this._mentionConfig && this._mentionConfig.character || '@' }(([A-za-z0-9\\s]*))$`);
+    this._initPattern = new RegExp(`(^|\\s)${this._mentionConfig && this._mentionConfig.character || '@'}(([A-za-z0-9\\s]*))$`);
 
     if (this._mentionConfig.baseComponentPlaceholder) {
       this._placeholder = this._mentionService.getPlaceholder(this._mentionConfig.baseComponentPlaceholder, this._mentionConfig.baseComponentPlaceholderClass);
@@ -132,29 +146,29 @@ export class NgMentionDirective implements AfterContentInit, ControlValueAccesso
     if (this._isRootCharacterBefore()) {
       this._removeTempNode();
     }
-  } 
+  }
 
-  private _arrowUp(event: KeyboardEvent) {
+  private _arrowUp(event: KeyboardEvent): void {
     event.preventDefault();
     this._mentionService.setFocusedItemIndexShift(-1);
   }
 
-  private _arrowDown(event: KeyboardEvent) {
+  private _arrowDown(event: KeyboardEvent): void {
     event.preventDefault();
     this._mentionService.setFocusedItemIndexShift(1);
   }
 
-  private _arrowLeft(event: KeyboardEvent) {
+  private _arrowLeft(event: KeyboardEvent): void {
     if (this._isRootCharacterBefore()) {
       this._revertTempNode();
     }
   }
 
-  private _arrowRight(event: KeyboardEvent) {
+  private _arrowRight(event: KeyboardEvent): void {
     event.preventDefault();
   }
 
-  private _onEscape(event: KeyboardEvent) {
+  private _onEscape(event: KeyboardEvent): void {
     if (this._isRootCharacterBefore()) {
       this._revertTempNode();
     }
@@ -172,10 +186,12 @@ export class NgMentionDirective implements AfterContentInit, ControlValueAccesso
     this._onChanged = fn;
   }
 
+  private _onChanged = (_: string) => {};
+
   public registerOnTouched(fn: any): void {}
 
   public setDisabledState(isDisabled: boolean): void {
-    setTimeout(() => this._elRef.nativeElement.setAttribute("contenteditable", String(!isDisabled)), 0)
+    setTimeout(() => this._elRef.nativeElement.setAttribute('contenteditable', String(!isDisabled)), 0);
   }
 
   private _initList(): void {
@@ -189,7 +205,7 @@ export class NgMentionDirective implements AfterContentInit, ControlValueAccesso
       this.onSelect.emit(item);
       const mention: HTMLElement = this._mentionService.createMention(item, this._mentionConfig);
       this._tempNode.insertAdjacentElement('beforebegin', mention);
-      mention.insertAdjacentHTML('afterend', '&#160;')
+      mention.insertAdjacentHTML('afterend', '&#160;');
       this._removeTempNode();
       this._onChanged(this._elRef.nativeElement.innerHTML);
     });
@@ -205,6 +221,7 @@ export class NgMentionDirective implements AfterContentInit, ControlValueAccesso
 
   private _switchChooseMode(): void {
     this._tempNode = this._mentionService.getTempNode(this._mentionConfig && this._mentionConfig.character || '@');
+
     this._setNodeInside(this._tempNode);
     this._setCursorPosition(this._tempNode);
     this._initList();
@@ -218,7 +235,7 @@ export class NgMentionDirective implements AfterContentInit, ControlValueAccesso
     this._selectObj.addRange(this._rangeObj);
   }
 
-  private _queryHandler(tempTextContent: string) {
+  private _queryHandler(tempTextContent: string): void {
     this.onSearch.emit(tempTextContent.slice(1, tempTextContent.length));
     this._setListCoordinates();
   }
@@ -246,9 +263,12 @@ export class NgMentionDirective implements AfterContentInit, ControlValueAccesso
     this._tempNode = null;
   }
 
-  private _setListCoordinates() {
+  private _setListCoordinates(): void {
     const coordinates: ClientRect = this._tempNode.getClientRects()[this._tempNode.getClientRects().length - 1];
-    this._listComponent.location.nativeElement.style.top = coordinates.top + coordinates.height + window.pageYOffset + 'px';
+
+    setTimeout(() => {
+      this._listComponent.location.nativeElement.style.top = coordinates.top - this._listComponent.location.nativeElement.clientHeight + 'px';
+    }, 0);
     this._listComponent.location.nativeElement.style.left = coordinates.left + coordinates.width + 'px';
   }
 
